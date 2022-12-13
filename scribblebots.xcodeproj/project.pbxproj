@@ -11,6 +11,11 @@
 		C785EA6F294925810093AB9E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C785EA6E294925810093AB9E /* ContentView.swift */; };
 		C785EA71294925820093AB9E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C785EA70294925820093AB9E /* Assets.xcassets */; };
 		C785EA74294925820093AB9E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C785EA73294925820093AB9E /* Preview Assets.xcassets */; };
+		C785EA7C294925DC0093AB9E /* ARViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C785EA7B294925DC0093AB9E /* ARViewContainer.swift */; };
+		C785EA7E29492B260093AB9E /* SkeletonJoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = C785EA7D29492B260093AB9E /* SkeletonJoint.swift */; };
+		C785EA8029492B490093AB9E /* SkeletonBone.swift in Sources */ = {isa = PBXBuildFile; fileRef = C785EA7F29492B490093AB9E /* SkeletonBone.swift */; };
+		C785EA8229492BC70093AB9E /* Bones.swift in Sources */ = {isa = PBXBuildFile; fileRef = C785EA8129492BC70093AB9E /* Bones.swift */; };
+		C785EA8429492CCC0093AB9E /* BodySkeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C785EA8329492CCC0093AB9E /* BodySkeleton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +24,12 @@
 		C785EA6E294925810093AB9E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C785EA70294925820093AB9E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C785EA73294925820093AB9E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C785EA7A2949259D0093AB9E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C785EA7B294925DC0093AB9E /* ARViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewContainer.swift; sourceTree = "<group>"; };
+		C785EA7D29492B260093AB9E /* SkeletonJoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonJoint.swift; sourceTree = "<group>"; };
+		C785EA7F29492B490093AB9E /* SkeletonBone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkeletonBone.swift; sourceTree = "<group>"; };
+		C785EA8129492BC70093AB9E /* Bones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bones.swift; sourceTree = "<group>"; };
+		C785EA8329492CCC0093AB9E /* BodySkeleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodySkeleton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +62,14 @@
 		C785EA6B294925810093AB9E /* scribblebots */ = {
 			isa = PBXGroup;
 			children = (
+				C785EA7A2949259D0093AB9E /* Info.plist */,
 				C785EA6C294925810093AB9E /* scribblebotsApp.swift */,
 				C785EA6E294925810093AB9E /* ContentView.swift */,
+				C785EA7B294925DC0093AB9E /* ARViewContainer.swift */,
+				C785EA7D29492B260093AB9E /* SkeletonJoint.swift */,
+				C785EA7F29492B490093AB9E /* SkeletonBone.swift */,
+				C785EA8129492BC70093AB9E /* Bones.swift */,
+				C785EA8329492CCC0093AB9E /* BodySkeleton.swift */,
 				C785EA70294925820093AB9E /* Assets.xcassets */,
 				C785EA72294925820093AB9E /* Preview Content */,
 			);
@@ -137,8 +154,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C785EA8429492CCC0093AB9E /* BodySkeleton.swift in Sources */,
 				C785EA6F294925810093AB9E /* ContentView.swift in Sources */,
+				C785EA8229492BC70093AB9E /* Bones.swift in Sources */,
+				C785EA8029492B490093AB9E /* SkeletonBone.swift in Sources */,
 				C785EA6D294925810093AB9E /* scribblebotsApp.swift in Sources */,
+				C785EA7C294925DC0093AB9E /* ARViewContainer.swift in Sources */,
+				C785EA7E29492B260093AB9E /* SkeletonJoint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +292,8 @@
 				DEVELOPMENT_TEAM = RSR8K28Z58;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = scribblebots/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs access to the camera to enable AR features.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -299,6 +323,8 @@
 				DEVELOPMENT_TEAM = RSR8K28Z58;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = scribblebots/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs access to the camera to enable AR features.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
