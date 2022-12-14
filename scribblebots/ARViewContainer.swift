@@ -62,10 +62,10 @@ extension ARView: ARSessionDelegate, URLSessionWebSocketDelegate {
         webSocket?.cancel(with: .goingAway, reason: "Demo ended".data(using: .utf8))
     }
     
-    func send() {
+    func send(message: String) {
         DispatchQueue.global().asyncAfter(deadline: .now()+1) {
-            self.send()
-            webSocket?.send(.string("Send a new message"), completionHandler: {error in
+            self.send(message: message)
+            webSocket?.send(.string(message), completionHandler: {error in
                 if let error = error {
                     print("Send error: \(error)")
                 }
@@ -78,7 +78,7 @@ extension ARView: ARSessionDelegate, URLSessionWebSocketDelegate {
     public func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
         print("Did open socket")
         ping()
-        send()
+        send(message: "Sending a new message")
     }
               
     public func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
