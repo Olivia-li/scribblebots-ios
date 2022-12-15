@@ -45,7 +45,7 @@ extension ARView: ARSessionDelegate, URLSessionWebSocketDelegate {
     
     func setupForWebSockets() {
         let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-        let url = URL(string: "wss://demo.piesocket.com/v3/channel_123?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV")
+        let url = URL(string: "wss://scribblebots.ngrok.io")
         webSocket = urlSession.webSocketTask(with: url!)
         webSocket?.resume()
     }
@@ -78,7 +78,6 @@ extension ARView: ARSessionDelegate, URLSessionWebSocketDelegate {
     public func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
         print("Did open socket")
         ping()
-        send(message: "Sending a new message")
     }
               
     public func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
@@ -90,6 +89,8 @@ extension ARView: ARSessionDelegate, URLSessionWebSocketDelegate {
             if let bodyAnchor = anchor as? ARBodyAnchor{
                 if let skeleton = bodySkeleton {
                     skeleton.update(with: bodyAnchor)
+                    var json = HandJSON(lx: skeleton.l_hand!.position.x, ly: skeleton.l_hand!.position.y, rx: skeleton.r_hand!.position.x, ry: skeleton.r_hand!.position.y)
+                    send(message: "{x: \(skeleton.l_hand!.position.x), y: \(skeleton.l_hand!.position.y)}")
                 }
                 else {
                     bodySkeleton = BodySkeleton(for: bodyAnchor)

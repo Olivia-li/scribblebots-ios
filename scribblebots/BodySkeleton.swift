@@ -9,9 +9,20 @@ import Foundation
 import RealityKit
 import ARKit
 
+struct HandJSON: Codable {
+    let lx: Float
+    let ly: Float
+    let rx: Float
+    let ry: Float
+}
+
+
 class BodySkeleton: Entity {
     var joints: [String: Entity] = [:]
     var bones: [String: Entity] = [:]
+    
+    var l_hand: Entity?
+    var r_hand: Entity?
     
     required init(for bodyAnchor: ARBodyAnchor) {
         super.init()
@@ -46,7 +57,7 @@ class BodySkeleton: Entity {
             let jointEntity = createJoint(radius: jointRadius, color: jointColor)
             joints[jointName] = jointEntity
             self.addChild(jointEntity)
-           
+        
         }
         
         for bone in Bones.allCases {
@@ -66,14 +77,25 @@ class BodySkeleton: Entity {
     func update(with bodyAnchor: ARBodyAnchor) {
         let rootPosition = simd_make_float3(bodyAnchor.transform.columns.3)
         
+        var l: Entity?
+        var r: Entity?
+        
         for jointName in ARSkeletonDefinition.defaultBody3D.jointNames {
             if let jointEntity = joints[jointName],
                let jointEntityTransform = bodyAnchor.skeleton.modelTransform(for: ARSkeleton.JointName(rawValue: jointName)) {
-                let jointEntityOffsetFromRoot = simd_make_float3(jointEntityTransform.columns.3)
-                jointEntity.position = jointEntityOffsetFromRoot + rootPosition
+                let jointEntityOffsetFromRoot = simd_make_float3(jointEntityTransform.columns.3) // relative to root (i.e. hipJoint)
+                jointEntity.position = jointEntityOffsetFromRoot + rootPosition // relative to world reference frame
                 jointEntity.orientation = Transform(matrix: jointEntityTransform).rotation
+                if jointName == "left_hand_joint" {
+                    l = jointEntity
+                } else if jointName == "right_hand_joint" {
+                    r = jointEntity
+                }
             }
         }
+        
+        self.l_hand = l
+        self.r_hand = r
         
         for bone in Bones.allCases {
             let boneName = bone.name
