@@ -7,8 +7,8 @@ import SwiftUI
 
 var webSocket: URLSessionWebSocketTask?
 
-
 class ViewController: UIViewController {
+
     private var cameraSession: AVCaptureSession?
     var delegate: AVCaptureVideoDataOutputSampleBufferDelegate?
     private let cameraQueue = DispatchQueue(
@@ -69,7 +69,6 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: URLSessionWebSocketDelegate {
-    
     func setupForWebSockets() {
         let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
         let url = URL(string: "wss://scribblebots.ngrok.io")
@@ -91,7 +90,6 @@ extension ViewController: URLSessionWebSocketDelegate {
 //
     func send(message: String) {
         DispatchQueue.global().asyncAfter(deadline: .now()+1) {
-            self.send(message: message)
             webSocket?.send(.string(message), completionHandler: {error in
                 if let error = error {
                     print("Send error: \(error)")
@@ -100,11 +98,10 @@ extension ViewController: URLSessionWebSocketDelegate {
 
         }
     }
-
+    
     public func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
         print("Did open socket")
         ping()
-        send(message: "Hello there")
     }
 
     public func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {

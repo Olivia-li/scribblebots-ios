@@ -20,13 +20,12 @@ struct Stick: Shape {
         for point in points {
             path.addLine(to: point)
         }
+        vc.send(message: NSCoder.string(for: path.boundingRect))
         return path.applying(CGAffineTransform.identity.scaledBy(x: size.width, y: size.height))
             .applying(CGAffineTransform(scaleX: -1, y: -1).translatedBy(x: -size.width, y: -size.height))
     }
 }
 
-
-import SwiftUI
 
 struct StickFigureView: View {
     @ObservedObject var poseEstimator: PoseEstimator
