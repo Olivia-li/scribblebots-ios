@@ -3,9 +3,35 @@ import AVFoundation
 import Vision
 import Combine
 
+struct wristJSON: Codable, CustomStringConvertible {
+    var lx: Double
+    var ly: Double
+    var rx: Double
+    var ry: Double
+    
+    var description: String {
+        return "lx: \(lx), ly: \(ly), rx: \(rx), ry: \(ry)"
+    }
+    
+    func toString() -> String {
+        return description
+    }
+}
+
 class PoseEstimator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, ObservableObject {
     let sequenceHandler = VNSequenceRequestHandler()
-    @Published var bodyParts = [VNHumanBodyPoseObservation.JointName : VNRecognizedPoint]()
+    @Published var bodyParts = [VNHumanBodyPoseObservation.JointName : VNRecognizedPoint]() {
+        didSet {
+            if bodyParts[.leftWrist]!.confidence != 0 && bodyParts[.rightWrist]!.confidence != 0 {
+                let data = wristJSON(lx: bodyParts[.leftWrist]!.x, ly: bodyParts[.leftWrist]!.y, rx: bodyParts[.rightWrist]!.x, ry: bodyParts[.rightWrist]!.y)
+                vc.send(message: data.toString())
+            }
+            
+            print(bodyParts[.leftWrist]!.confidence)
+            print(bodyParts[.leftWrist]!.x)
+            print(bodyParts[.leftWrist]!.y)
+        }
+    }
     var wasInBottomPosition = false
     @Published var isGoodPosture = true
     
