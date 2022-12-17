@@ -71,7 +71,7 @@ class ViewController: UIViewController {
 extension ViewController: URLSessionWebSocketDelegate {
     func setupForWebSockets() {
         let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-        let url = URL(string: "wss://scribblebots.ngrok.io")
+        let url = URL(string: "ws://192.168.131.78:8000")
         webSocket = urlSession.webSocketTask(with: url!)
         webSocket?.resume()
     }
@@ -89,7 +89,7 @@ extension ViewController: URLSessionWebSocketDelegate {
     }
 //
     func send(message: String) {
-        DispatchQueue.global().asyncAfter(deadline: .now()+1) {
+        DispatchQueue.global().asyncAfter(deadline: .now()) {
             webSocket?.send(.string(message), completionHandler: {error in
                 if let error = error {
                     print("Send error: \(error)")

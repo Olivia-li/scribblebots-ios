@@ -12,13 +12,12 @@ import Vision
 
 var vc = ViewController()
 
-
-
 struct ViewContainer: UIViewControllerRepresentable {
     var poseEstimator: PoseEstimator
     
     func makeUIViewController(context: Context) -> some UIViewController {
         vc.delegate = poseEstimator
+        UIApplication.shared.isIdleTimerDisabled = true
         return vc
     }
     
