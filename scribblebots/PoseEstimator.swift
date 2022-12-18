@@ -106,6 +106,9 @@ struct wristJSON: CustomStringConvertible {
              ["x": neck.x, "y": neck.y],
              ["x": leftShoulder.x, "y": leftShoulder.y]],
             
+            [["x": leftHip.x, "y": leftHip.y],
+             ["x": rightHip.x, "y": rightHip.y]],
+            
             [["x": root.x, "y": root.y],
              ["x": neck.x, "y": root.y]]
          ]
