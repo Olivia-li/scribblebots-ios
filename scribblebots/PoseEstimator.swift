@@ -3,14 +3,109 @@ import AVFoundation
 import Vision
 import Combine
 
-struct wristJSON: Codable, CustomStringConvertible {
-    var lx: Double
-    var ly: Double
-    var rx: Double
-    var ry: Double
 
+func jsonToString(json: Any, prettyPrinted: Bool = false) -> String {
+    var options: JSONSerialization.WritingOptions = []
+    if prettyPrinted {
+      options = JSONSerialization.WritingOptions.prettyPrinted
+    }
+
+    do {
+      let data = try JSONSerialization.data(withJSONObject: json, options: options)
+      if let string = String(data: data, encoding: String.Encoding.utf8) {
+        return string
+      }
+    } catch {
+      print(error)
+    }
+
+    return ""
+}
+
+struct wristJSON: CustomStringConvertible {
+    var points: [VNHumanBodyPoseObservation.JointName : VNRecognizedPoint]
+    
+    // Left Leg
+    var leftAnkle: VNRecognizedPoint
+    var leftKnee: VNRecognizedPoint
+    var leftHip: VNRecognizedPoint
+    
+    // Right leg
+    var rightAnkle: VNRecognizedPoint
+    var rightKnee: VNRecognizedPoint
+    var rightHip: VNRecognizedPoint
+    
+    //Left Arm
+    var leftWrist: VNRecognizedPoint
+    var leftElbow: VNRecognizedPoint
+    var leftShoulder: VNRecognizedPoint
+    
+    //Right Arm
+    var rightWrist: VNRecognizedPoint
+    var rightElbow: VNRecognizedPoint
+    var rightShoulder: VNRecognizedPoint
+    
+    // Root
+    var root: VNRecognizedPoint
+    var neck: VNRecognizedPoint
+    
+    
+    init(points: [VNHumanBodyPoseObservation.JointName : VNRecognizedPoint]) {
+        self.points = points
+        self.leftWrist = self.points[.leftWrist]!
+        self.rightWrist = self.points[.rightWrist]!
+        
+        // Left Leg
+        self.leftAnkle = self.points[.leftAnkle]!
+        self.leftKnee = self.points[.leftAnkle]!
+        self.leftHip = self.points[.leftHip]!
+        
+        // Right Leg
+        self.rightAnkle = self.points[.rightAnkle]!
+        self.rightKnee = self.points[.rightAnkle]!
+        self.rightHip = self.points[.rightHip]!
+        
+        // Left Arm
+        self.leftWrist = self.points[.leftWrist]!
+        self.leftElbow = self.points[.leftElbow]!
+        self.leftShoulder = self.points[.leftShoulder]!
+        
+        // Right Arm
+        self.rightWrist = self.points[.rightWrist]!
+        self.rightElbow = self.points[.rightElbow]!
+        self.rightShoulder = self.points[.rightShoulder]!
+        
+        // Root
+        self.root = self.points[.root]!
+        self.neck = self.points[.neck]!
+    }
+    
+    
+    
     var description: String {
-        return "{\"lx\": \(lx),\"ly\": \(ly),\"rx\": \(rx),\"ry\": \(ry)}"
+        return jsonToString(json:
+        ["wrist": ["lx": leftWrist.x, "ly": leftWrist.y, "rx": rightWrist.x, "ry": rightWrist.y],
+         "body": [
+            [["x": leftAnkle.x, "y": leftAnkle.y],
+             ["x": leftKnee.x, "y": leftKnee.y],
+             ["x": leftHip.x, "y": leftHip.y]],
+            
+            [["x": rightAnkle.x, "y": rightAnkle.y],
+             ["x": rightKnee.x, "y": rightKnee.y],
+             ["x": rightHip.x, "y": rightHip.y]],
+            
+            [["x": leftWrist.x, "y": leftWrist.y],
+             ["x": leftElbow.x, "y": leftElbow.y],
+             ["x": leftShoulder.x, "y": leftShoulder.y]],
+            
+            [["x": rightWrist.x, "y": rightWrist.y],
+             ["x": rightElbow.x, "y": rightElbow.y],
+             ["x": rightShoulder.x, "y": rightShoulder.y]],
+            
+            [["x": root.x, "y": root.y],
+             ["x": neck.x, "y": root.y]]
+         ]
+        ])
     }
     
     func toString() -> String {
@@ -22,11 +117,10 @@ class PoseEstimator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, Obs
     let sequenceHandler = VNSequenceRequestHandler()
     @Published var bodyParts = [VNHumanBodyPoseObservation.JointName : VNRecognizedPoint]() {
         didSet {
-            if bodyParts[.leftWrist]!.confidence != 0 && bodyParts[.rightWrist]!.confidence != 0 {
-
-                
-                let data = wristJSON(lx: bodyParts[.leftWrist]!.x, ly: bodyParts[.leftWrist]!.y, rx: bodyParts[.rightWrist]!.x, ry: bodyParts[.rightWrist]!.y)
-                vc.send(message: data.toString())
+            if bodyParts[.leftWrist]!.confidence >= 0.2 && bodyParts[.rightWrist]!.confidence >= 0.2 {
+                let data = wristJSON(points: bodyParts).toString()
+                print(data)
+                vc.send(message: data)
             }
         }
     }
